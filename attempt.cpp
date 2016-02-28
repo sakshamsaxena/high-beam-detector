@@ -1,4 +1,5 @@
 #include "opencv2/opencv.hpp"
+#include "opencv2/features2d.hpp"
 
 using namespace cv;
 
@@ -24,6 +25,12 @@ int main(int, char**)
     Mat frame;
     Rect cropper(X, Y, cWidth, cHeight);
     
+    
+    std::vector<std::vector<Point> > contours;
+    std::vector<Rect> bboxes;
+    Ptr< MSER > mser = MSER::create();
+
+    
     // Iterating over each frame
     for(;;)
     {
@@ -31,6 +38,11 @@ int main(int, char**)
         frame = frame(cropper); // Cropping same frame
         cvtColor(frame, frame, CV_BGR2GRAY); // Grayscale conversion of same frame
         threshold(frame, frame, 200, 255, THRESH_TOZERO); // Threshold at 200 value
+        mser->detectRegions(frame, contours, bboxes);
+        for (int i = 0; i < bboxes.size(); i++)
+        {
+            rectangle(frame, bboxes[i], CV_RGB(0, 255, 0));
+        }
         imshow("cropped", frame);
         if(waitKey(30) >= 0) break;
     }
