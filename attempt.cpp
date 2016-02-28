@@ -18,14 +18,15 @@ int main(int, char**)
     int Y = fHeight - cHeight; // Y of Top left corner of Rectangle
     
     Mat frame;
-    Mat croppedFrame;
     Rect cropper(X, Y, cWidth, cHeight);
     
     for(;;)
     {
-        cap >> frame;
-        croppedFrame = frame(cropper);
-        imshow("cropped", croppedFrame);
+        cap >> frame; // Webcam image to an empty frame
+        frame = frame(cropper); // Cropping same frame
+        cvtColor(frame, frame, CV_BGR2GRAY); // Grayscale conversion of same frame
+        threshold(frame, frame, 200, 255, THRESH_TOZERO);
+        imshow("cropped", frame);
         if(waitKey(30) >= 0) break;
     }
     // the camera will be deinitialized automatically in VideoCapture destructor
