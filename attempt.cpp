@@ -1,14 +1,15 @@
-#include "opencv2/opencv.hpp"
-#include "opencv2/features2d.hpp"
+#include <opencv2/opencv.hpp>
+#include <opencv2/features2d.hpp>
+#include <wiringPi.h>
 
 using namespace cv;
 
 int main(int, char**)
 {
-    VideoCapture cap(0); // open the default camera
+    VideoCapture cap("./Trip_LowRes.mp4"); // open the default camera
 
-    if(!cap.isOpened())  // check if we succeeded
-        return -1;
+    wiringPiSetup () ;
+    pinMode (0, OUTPUT) ;
 
     // Set FPS to 10
     cap.set(CV_CAP_PROP_FPS, 10);
@@ -39,10 +40,12 @@ int main(int, char**)
         cvtColor(frame, frame, CV_BGR2GRAY); // Grayscale conversion of same frame
         threshold(frame, frame, 200, 255, THRESH_TOZERO); // Threshold at 200 value
         mser->detectRegions(frame, contours, bboxes);
-        for (int i = 0; i < bboxes.size(); i++)
-        {
-            rectangle(frame, bboxes[i], CV_RGB(0, 255, 0));
-        }
+
+	if(bboxes.size())
+		digitalWrite (0,  LOW) ;
+	else
+		digitalWrite (0,  HIGH) 
+
         imshow("cropped", frame);
         if(waitKey(30) >= 0) break;
     }
