@@ -9,10 +9,11 @@ int main(int, char**)
     VideoCapture cap(0); // open the default camera
 
     wiringPiSetup () ;
-    pinMode (0, OUTPUT) ;
+    pinMode (0, OUTPUT) ; //High-beam
+    pinMode (1, OUTPUT) ; //Low-beam
 
-    // Set FPS to 10
-    // cap.set(CV_CAP_PROP_FPS, 10);
+    digitalWrite(0, HIGH) ; //Set high beam
+    digitalWrite(1, LOW) ; //Unset low beam
 
     // Constants
     int fWidth = cap.get(CV_CAP_PROP_FRAME_WIDTH); //True frame width
@@ -42,10 +43,18 @@ int main(int, char**)
         mser->detectRegions(frame, contours, bboxes);
 
 	if(bboxes.size()){
-		digitalWrite (0,  HIGH) ;
+		//High Beam detected
+		digitalWrite (0, LOW) ; // unset high beam
+		digitalWrite (1, HIGH); // set low beam
+		delay(5000);		// wait for 5 seconds
+		digitalWrite (0, HIGH); // set high beam again now
+		digitalWrite (1, LOW);  // unset low beam now
 	}
-	else
-		digitalWrite (0,  LOW);
+	else{
+		//No beam detected yet
+		digitalWrite (0, HIGH); // High beam is set as usual
+		digitalWrite (1, LOW);  // Low beam is unset as usual
+	}
 
         if(waitKey(30) >= 0) break;
     }
