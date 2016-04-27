@@ -1,3 +1,4 @@
+#include <iostream>
 #include <opencv2/opencv.hpp>
 #include <opencv2/features2d.hpp>
 #include <wiringPi.h>
@@ -44,18 +45,23 @@ int main(int, char**)
 
 	if(bboxes.size()){
 		//High Beam detected
+		//std::cout<<"High Beam detected at "<<time(0);
 		digitalWrite (0, LOW) ; // unset high beam
 		digitalWrite (1, HIGH); // set low beam
+		//std::cout<<"Lowering Beam";
 		delay(5000);		// wait for 5 seconds
 		digitalWrite (0, HIGH); // set high beam again now
 		digitalWrite (1, LOW);  // unset low beam now
+		//std::cout<<"Returning to high beam at "<<time(0);
+		frame = Mat::zeros(1,1,CV_64F);
 	}
 	else{
 		//No beam detected yet
+		//std::cout<<"No high beam detected yet";
 		digitalWrite (0, HIGH); // High beam is set as usual
 		digitalWrite (1, LOW);  // Low beam is unset as usual
 	}
-
+	//imshow("Yeah", frame);
         if(waitKey(30) >= 0) break;
     }
     // the camera will be deinitialized automatically in VideoCapture destructor
