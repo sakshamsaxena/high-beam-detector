@@ -47,7 +47,6 @@ int main(int, char**)
 	else
 		digitalWrite (0,  LOW);
 
-        imshow("cropped", frame);
         if(waitKey(30) >= 0) break;
     }
     // the camera will be deinitialized automatically in VideoCapture destructor
