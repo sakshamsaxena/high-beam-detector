@@ -7,7 +7,7 @@ using namespace cv;
 
 int main(int, char**)
 {
-    VideoCapture cap(0); // open the default camera
+    VideoCapture cap("./video.mp4"); // open the default camera
 
 /*    wiringPiSetup () ;
     pinMode (0, OUTPUT) ; //High-beam
@@ -23,7 +23,7 @@ int main(int, char**)
     int cWidth = fWidth; // Width remains same
     int X = 0; // X of Top left corner of Rectangle
     int Y = fHeight - cHeight; // Y of Top left corner of Rectangle
-    int x = 1;
+    int x = 0;
 
     // Frame matrix and cropping rectangle initialization
     Mat frame;
@@ -44,22 +44,19 @@ int main(int, char**)
         threshold(frame, frame, 200, 255, THRESH_TOZERO); // Threshold at 200 value
         mser->detectRegions(frame, contours, bboxes);
 
-	if(bboxes.size()){
+	if(bboxes.size() && !x){
 		//High Beam detected
-		std::cout<<"High Beam detected at "<<time(0)<<".Lowering beam...\n";
+		std::cout<<"High Beam detected at "<<cap.get(CV_CAP_PROP_POS_FRAMES)<<".Lowering beam...\n";
+		x = 1;
 		//digitalWrite (0, LOW) ; // unset high beam
 		//digitalWrite (1, HIGH); // set low beam
 		delay(5000);		// wait for 5 seconds
-		//digitalWrite (0, HIGH); // set high beam again now
-		//digitalWrite (1, LOW);  // unset low beam now
-		std::cout<<"Returning to high beam at "<<time(0)<<"\n";
-		//skip processing buffer frames
-		if(x!=3){x++;continue;}
 	}
+	else if(bboxes.size() && x) continue;
 	else{
 		//No beam detected yet
-		std::cout<<"No high beam detected yet at "<<time(0)<<"\n";
-		x = 1;
+		std::cout<<"No high beam detected yet at "<<cap.get(CV_CAP_PROP_POS_FRAMES)<<"\n";
+		x = 0;
 		//digitalWrite (0, HIGH); // High beam is set as usual
 		//digitalWrite (1, LOW);  // Low beam is unset as usual
 	}
