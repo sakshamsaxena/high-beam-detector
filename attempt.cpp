@@ -50,7 +50,7 @@ int main(int, char**)
 	if(bboxes.size() && !x){
 		//High Beam detected
 		std::cout<<"Detected at "<<cap.get(CV_CAP_PROP_POS_FRAMES)<<"\n";
-		datadump.open("Data.txt", std::ofstream::out | std::ofstream::app);
+		datadump.open("Data_OPENCV.txt", std::ofstream::out | std::ofstream::app);
 		datadump<<"High Beam detected at "<<cap.get(CV_CAP_PROP_POS_FRAMES)<<".Lowering beam...\n";
 		datadump.close();
 		x = 1;

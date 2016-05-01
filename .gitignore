@@ -3,4 +3,5 @@
 !attempt.cpp
 !CMakeLists.txt
 !master.m
-!Data.txt
+!Data_OPENCV.txt
+!Data_MATLAB.txt

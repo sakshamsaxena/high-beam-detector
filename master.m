@@ -3,8 +3,8 @@ clear all;
 F=0;
 
 % 1.Input Video Object Handler Definition
-inputVideo = vision.VideoFileReader('../vids/Trip_LowRes_2.mp4');
-videoPlayer = vision.VideoPlayer;
+inputVideo = vision.VideoFileReader('../vids/video.mp4');
+%videoPlayer = vision.VideoPlayer;
 
 % 2.Cropping Height and Width of frame. Subject to convenient
 %	adjustments according to the position of camera. Mainly using to
@@ -22,6 +22,8 @@ crop = vision.ImagePadder(...
 gray = vision.ColorSpaceConverter;
 gray.Conversion = 'RGB to intensity';
 
+fileID = fopen('Data_MATLAB.txt','w');
+
 % 4.Implementation on individual frames till the end of video.
 while(~isDone(inputVideo))
 	% Current Frame number
@@ -37,16 +39,25 @@ while(~isDone(inputVideo))
 	% Detect MSER Regions
 	regions = detectMSERFeatures(currentFrame, ...
 								'RegionAreaRange', [800 3000], ...
-								'ThresholdDelta', 4);
+								'ThresholdDelta', 5);
 	% Check for 'big bright blob(s)', or high incoming beam
 	% and output detected blob count and corresponding frame
-	if(regions.Count >= 2 && regions.Count <=6)
-		disp([regions.Count, F]);
+	if(regions.Count >= 2 && regions.Count <=6 && flag == 0)
+        disp('Detected!');
+        fprintf(fileID,'High Beam detected at %u. Lowering beam...\n', F);
+        flag = 1;
+        pause(5);
+    elseif(regions.Count >= 2 && regions.Count <=6 && flag)
+        continue;
+    else
+        disp('No beam detected');
+        flag = 0;
 	end
 	% Port frame to player
-	step(videoPlayer,currentFrame);
+	%step(videoPlayer,currentFrame);
 end
 
 % 5.Release both player and video file instances
+fclose(fileID);
 release(inputVideo);
-release(videoPlayer);
+%release(videoPlayer);
