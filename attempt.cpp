@@ -36,8 +36,7 @@ int main(int, char**)
     std::vector<Rect> bboxes;
     Ptr< MSER > mser = MSER::create(_delta, _min_area, _max_area);
 
-    ofstream datadump;
-    datadump.open("Data.txt");
+    std::ofstream datadump;
 
     // Iterating over each frame
     for(;;)
@@ -50,7 +49,10 @@ int main(int, char**)
 
 	if(bboxes.size() && !x){
 		//High Beam detected
+		std::cout<<"Detected at "<<cap.get(CV_CAP_PROP_POS_FRAMES)<<"\n";
+		datadump.open("Data.txt", std::ofstream::out | std::ofstream::app);
 		datadump<<"High Beam detected at "<<cap.get(CV_CAP_PROP_POS_FRAMES)<<".Lowering beam...\n";
+		datadump.close();
 		x = 1;
 		//digitalWrite (0, LOW) ; // unset high beam
 		//digitalWrite (1, HIGH); // set low beam
@@ -59,7 +61,7 @@ int main(int, char**)
 	else if(bboxes.size() && x) continue;
 	else{
 		//No beam detected yet
-		//std::cout<<"No high beam detected yet at "<<cap.get(CV_CAP_PROP_POS_FRAMES)<<"\n";
+		std::cout<<"No high beam detected yet at "<<cap.get(CV_CAP_PROP_POS_FRAMES)<<"\n";
 		x = 0;
 		//digitalWrite (0, HIGH); // High beam is set as usual
 		//digitalWrite (1, LOW);  // Low beam is unset as usual
@@ -67,7 +69,6 @@ int main(int, char**)
 	//imshow("Yeah", frame);
         if(waitKey(30) >= 0) break;
     }
-    datadump.close();
     // the camera will be deinitialized automatically in VideoCapture destructor
     return 0;
 }
