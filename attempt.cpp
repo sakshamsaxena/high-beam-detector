@@ -22,6 +22,7 @@ int main(int, char**)
     int cWidth = fWidth; // Width remains same
     int X = 0; // X of Top left corner of Rectangle
     int Y = fHeight - cHeight; // Y of Top left corner of Rectangle
+    int flag = 0; // Flag which would set during active circuit
 
     // Frame matrix and cropping rectangle initialization
     Mat frame;
@@ -42,16 +43,19 @@ int main(int, char**)
         threshold(frame, frame, 200, 255, THRESH_TOZERO); // Threshold at 200 value
         mser->detectRegions(frame, contours, bboxes);
 
-	if(bboxes.size()){
+	if(bboxes.size()&&!flag){
 		//High Beam detected
+		flag = 1;
 		digitalWrite (0, LOW) ; // unset high beam
 		digitalWrite (1, HIGH); // set low beam
 		delay(5000);		// wait for 5 seconds
-		digitalWrite (0, HIGH); // set high beam again now
-		digitalWrite (1, LOW);  // unset low beam now
+	}
+	else if(bboxes.size()&&flag){
+		continue;
 	}
 	else{
 		//No beam detected yet
+		flag = 0;
 		digitalWrite (0, HIGH); // High beam is set as usual
 		digitalWrite (1, LOW);  // Low beam is unset as usual
 	}
