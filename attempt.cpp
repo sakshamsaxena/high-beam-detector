@@ -59,7 +59,7 @@ int main(int, char**)
 		digitalWrite (0, HIGH); // High beam is set as usual
 		digitalWrite (1, LOW);  // Low beam is unset as usual
 	}
-
+	imshow("Visual Demo", frame);
         if(waitKey(30) >= 0) break;
     }
     // the camera will be deinitialized automatically in VideoCapture destructor
