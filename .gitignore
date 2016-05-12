@@ -2,6 +2,5 @@
 !.gitignore
 !attempt.cpp
 !attempt_v
-!attempt
 !CMakeLists.txt
 !master.m

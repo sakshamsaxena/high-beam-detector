@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
-project( attempt )
+project( attempt_v )
 find_package( OpenCV REQUIRED )
 SET( CMAKE_CXX_FLAGS "-pthread -lwiringPi" )
-add_executable( attempt attempt.cpp )
+add_executable( attempt_v attempt.cpp )
 target_link_libraries( attempt_v ${OpenCV_LIBS} )
