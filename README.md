@@ -8,6 +8,8 @@ Using [Open CV](http://opencv.org/) in C++ to process feed and [wiringPi](http:/
 4. ```./attempt```
 
 # Additional Notes
-```* master ``` contains standalone code, optimsed for production.
-```* visual-demo``` contains the video output as well for testing and analysing. Need to be booted into a GUI to run this.
-```* datadump ``` contains comparison between output of [MSER](https://en.wikipedia.org/wiki/Maximally_stable_extremal_regions) application on a pre-recorded video processed using Open CV and [MatLab](http://in.mathworks.com/help/vision/ref/detectmserfeatures.html) separately 
+```master ``` contains standalone code, optimsed for production.
+
+```visual-demo``` contains the video output as well for testing and analysing. Need to be booted into a GUI to run this.
+
+```datadump ``` contains comparison between output of [MSER](https://en.wikipedia.org/wiki/Maximally_stable_extremal_regions) application on a pre-recorded video processed using Open CV and [MatLab](http://in.mathworks.com/help/vision/ref/detectmserfeatures.html) separately.
