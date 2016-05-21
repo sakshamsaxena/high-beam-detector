@@ -1,11 +1,6 @@
-# Open CV demo
-Practicing Open CV in C++ using CMake and GCC.
-
-# Build Instructions (Linux flavours)
+# Build Instructions (visual version, Linux flavours)
 1. ```git clone THIS_REPOSITORY```
 2. ```cd THIS_REPOSITORY```
-3. ```cmake . && make```
-4. ```./attempt```
-
-# Additional Notes
-```master.m``` is for reference only. Can follow similar practice in code.
+3. ```git checkout visual-demo```
+4. ```cmake . && make```
+5. ```./attempt_v```
