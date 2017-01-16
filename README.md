@@ -5,7 +5,7 @@ Using [Open CV](http://opencv.org/) in C++ to process feed and [wiringPi](http:/
 1. ```git clone THIS_REPOSITORY```
 2. ```cd THIS_REPOSITORY```
 3. ```cmake . && make```
-4. ```./attempt```
+4. ```./Core```
 
 # Additional Notes
 ```master ``` contains standalone code, optimsed for production.

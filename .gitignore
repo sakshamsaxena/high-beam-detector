@@ -1,5 +1,6 @@
 *
 !.gitignore
-!attempt.cpp
+!Core.cpp
 !CMakeLists.txt
 !master.m
+!README.md
