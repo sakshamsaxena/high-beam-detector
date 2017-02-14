@@ -25,7 +25,7 @@ int main(int, char**)
 	int flag = 0; // Flag which would set during active circuit
 
 	// Frame matrix and cropping rectangle initialization
-	Mat frame;
+	Mat frame,detected_image;
 	Rect cropper(X, Y, cWidth, cHeight);
 	int _delta = 5;
 	int _min_area = 800;
@@ -45,6 +45,10 @@ int main(int, char**)
 
 		if (bboxes.size() && !flag) {
 			//High Beam detected
+
+			detected_image = frame; //save detected frame;
+			imwrite("detected_frame.jpg",detected_image); //write the saved frame on the directory
+
 			flag = 1;
 			digitalWrite (0, LOW) ; // unset high beam
 			digitalWrite (1, HIGH); // set low beam
