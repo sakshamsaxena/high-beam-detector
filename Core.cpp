@@ -25,7 +25,8 @@ int main(int, char**)
 	int flag = 0; // Flag which would set during active circuit
 
 	// Frame matrix and cropping rectangle initialization
-	Mat frame,detected_image;
+	Mat frame;
+	Mat detected_image; // variable for storing detected frame
 	Rect cropper(X, Y, cWidth, cHeight);
 	int _delta = 5;
 	int _min_area = 800;
@@ -33,6 +34,8 @@ int main(int, char**)
 	std::vector<std::vector<Point> > contours;
 	std::vector<Rect> bboxes;
 	Ptr< MSER > mser = MSER::create(_delta, _min_area, _max_area);
+
+	int count = 0; //number of detected frames
 
 	// Iterating over each frame
 	for (;;)
@@ -47,12 +50,16 @@ int main(int, char**)
 			//High Beam detected
 
 			detected_image = frame; //save detected frame;
-			imwrite("detected_frame.jpg",detected_image); //write the saved frame on the directory
+
+			sprintf(file,"Image_%d.jpg",count);  //save files with different names using 'count'     
+			imwrite(file,image);
+			//imwrite("detected_frame.jpg",detected_image); //write the saved frame on the directory
 
 			flag = 1;
 			digitalWrite (0, LOW) ; // unset high beam
 			digitalWrite (1, HIGH); // set low beam
 			delay(5000);		// wait for 5 seconds
+			count++;
 		}
 		if (bboxes.size() && flag) {
 			continue;
