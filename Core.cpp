@@ -26,6 +26,10 @@ int main(int, char**)
 
 	// Frame matrix and cropping rectangle initialization
 	Mat frame;
+
+	Mat frame_original; // for storing complete frame of detected_image
+	Mat detected_image; // variable for storing detected frame
+	
 	Rect cropper(X, Y, cWidth, cHeight);
 	int _delta = 5;
 	int _min_area = 800;
@@ -34,21 +38,36 @@ int main(int, char**)
 	std::vector<Rect> bboxes;
 	Ptr< MSER > mser = MSER::create(_delta, _min_area, _max_area);
 
+	int count = 0; //number of detected frames
+	char file1[15],file2[15]; //for storing file names 
+
 	// Iterating over each frame
 	for (;;)
 	{
-		cap >> frame; // Webcam image to an empty frame
-		frame = frame(cropper); // Cropping same frame
+		cap >> frame_original; // Webcam image to an empty frame
+
+		frame = frame_original(cropper); // Cropping same frame
 		cvtColor(frame, frame, CV_BGR2GRAY); // Grayscale conversion of same frame
 		threshold(frame, frame, 200, 255, THRESH_TOZERO); // Threshold at 200 value
 		mser->detectRegions(frame, contours, bboxes);
 
 		if (bboxes.size() && !flag) {
 			//High Beam detected
+
+			detected_image = frame; //save detected frame;
+			sprintf(file1,"Image_%d.jpg",count);  //save files with different names using 'count'     
+			imwrite(file1,detected_image);
+			//imwrite("detected_frame.jpg",detected_image); //write the saved frame on the directory
+
+			detected_frame = frame_original;
+			sprintf(file2,"Frame_%d.jpg",count);  //save files with different names using 'count'     
+			imwrite(file2,frame_original);
+
 			flag = 1;
 			digitalWrite (0, LOW) ; // unset high beam
 			digitalWrite (1, HIGH); // set low beam
 			delay(5000);		// wait for 5 seconds
+			count++;
 		}
 		if (bboxes.size() && flag) {
 			continue;
